@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Task
 
@@ -36,4 +36,20 @@ def delete_task(request, pk):
     task = get_object_or_404(Task, pk=pk)
     task.delete()
     return redirect('home')
+
+def change_priority(request, pk):
+    if request.method == "GET":
+        task = get_object_or_404(Task, pk=pk)
+
+        priorities = ['low', 'medium', 'high']
+        current_index = priorities.index(task.priority)
+        new_index = (current_index + 1) % len(priorities)
+
+        task.priority = priorities[new_index]
+        task.save()
+
+        return redirect('home')
+    
+    return redirect('home')
+
 

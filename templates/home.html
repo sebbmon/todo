@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,23 +19,37 @@
     }
     </style>
 </head>
-<body>
+<body style="background-color: #d2d5d8;">
     <div class="container">
-        <h3 class="pt-5 text-center">Django ToDo App</h3>
+        <h2 class="pt-5 text-center" style="font-weight: bold;">Django ToDo App</h2>
         <div class="row">
             <h4>My Day</h4>
             <p class="text-muted">{% now "jS F Y" %}</p>
-            <div class="col-md-7 col-lg-7" style="height: 450px; overflow: scroll;">
+            <div class="col-md-7 col-lg-7" style="height: 600px; overflow-x: hidden; overflow-y: scroll;">
                 <!-- List of all the tasks for the day -->
                 {% for task in tasks %}
                 <div class="card m-1">
-                    <div class="card-body">
-                        {{ task.task }}
-                        <span style="position: relative; float: right;">
+                    <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Task name -->
+                        <div>
+                            <h5>{{ task.task }}</h5>
+                            <p class="text-muted" style="margin-top: 5px;">Priority: 
+                                <span class="badge 
+                                    {% if task.priority == 'high' %}bg-danger
+                                    {% elif task.priority == 'medium' %}bg-warning
+                                    {% else %}bg-secondary
+                                    {% endif %}
+                                "> {{ task.get_priority_display }}</span>
+                            </p>
+                        </div>
+                        
+                        <!-- Buttons -->
+                        <div style="display: flex; gap: 10px;">
                             <a href="{% url 'mark_as_done' task.pk %}" class="btn btn-success"><i class="fa fa-check"></i> Mark as Done</a>
-                            <a href="{% url 'delete_task' task.id %}"class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                            <a href="{% url 'delete_task' task.id %}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
                             <a href="{% url 'edit_task' task.id %}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                        </span>
+                            <a href="{% url 'change_priority' task.id %}" class="btn btn-warning"><i class="fa fa-list-ul"></i></a>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -46,6 +61,15 @@
                 <div class="card m-1">
                     <div class="card-body">
                         {{ task.task }}
+
+                        <p class="text-muted" style="margin-top: 5px;">Priority: <span class="badge 
+                            {% if task.priority == 'high' %}bg-danger
+                            {% elif task.priority == 'medium' %}bg-warning
+                            {% else %}bg-secondary
+                            {% endif %}
+                            "> {{ task.get_priority_display }}</span>
+                        </p>
+                        
                         <span style="position: relative; float: right;">
                             <a href="{% url 'mark_as_undone' task.pk %}" class="btn btn-danger"><i class="fa fa-times"></i> Mark as undone</a>
                         </span>
@@ -69,5 +93,6 @@
             </div>
         </div>
     </div>
+    <script src="{% static 'js/change_priority.js' %}"></script>
 </body>
 </html>

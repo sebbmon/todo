@@ -16,4 +16,7 @@ urlpatterns = [
 
     # Delete task
     path('delete_task/<int:pk>/', views.delete_task, name='delete_task'),
+
+    # Choose priority 
+    path('change_priority/<int:pk>/', views.change_priority, name='change_priority'),
 ]

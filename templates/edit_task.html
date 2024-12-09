@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="container">
-        <h3 class="pt-5 pb-5 text-center">Django TODO App - Edit Task</h3>
+        <h2 class="pt-5 pb-5 text-center" style="font-weight: bold;">Django TODO App - Edit Task</h2>
         <form action="{% url 'edit_task' get_task.pk %}" method="POST" style="width: 500px; margin: auto;">
             {% csrf_token %}
             <div class="form-group">
