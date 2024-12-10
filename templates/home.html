@@ -25,14 +25,27 @@
         <div class="row">
             <h4>My Day</h4>
             <p class="text-muted">{% now "jS F Y" %}</p>
+        
+            <!-- Formularz sortowania -->
+            <div class="d-flex align-items-center mb-3">
+                <label for="sort" class="form-label mb-0" style="margin-right: 5px;">Sort by:</label> <!-- Dodano mr-3 dla marginesu po prawej -->
+                <form method="POST" action="{% url 'home' %}" class="mb-0 w-auto">
+                    {% csrf_token %}
+                    <select name="sort" id="sort" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="created" {% if sort == 'created' %}selected{% endif %}>Date Created (Oldest -> Youngest)</option>
+                        <option value="priority" {% if sort == 'priority' %}selected{% endif %}>Priority (Highest -> Lowest)</option>
+                        <option value="alphabetical" {% if sort == 'alphabetical' %}selected{% endif %}>Alphabetical (A -> Z)</option>
+                    </select>
+                </form>
+            </div>
+        
+            <!-- Lista aktywnych zadań -->
             <div class="col-md-7 col-lg-7" style="height: 600px; overflow-x: hidden; overflow-y: scroll;">
-                <!-- List of all the tasks for the day -->
                 {% for task in tasks %}
                 <div class="card m-1">
-                    <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
-                        <!-- Task name -->
+                    <div class="card-body d-flex justify-content-between align-items-center">
                         <div>
-                            <h5>{{ task.task }}</h5>
+                            <h5 style="font-weight: bold;">{{ task.task }}</h5>
                             <p class="text-muted" style="margin-top: 5px;">Priority: 
                                 <span class="badge 
                                     {% if task.priority == 'high' %}bg-danger
@@ -41,9 +54,11 @@
                                     {% endif %}
                                 "> {{ task.get_priority_display }}</span>
                             </p>
+                            <p class="text-muted" style="margin-top: 5px;">Created: 
+                                <span>{{ task.created_at|date:"d.m.Y" }}</span>
+                            </p>
                         </div>
                         
-                        <!-- Buttons -->
                         <div style="display: flex; gap: 10px;">
                             <a href="{% url 'mark_as_done' task.pk %}" class="btn btn-success"><i class="fa fa-check"></i> Mark as Done</a>
                             <a href="{% url 'delete_task' task.id %}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
@@ -54,30 +69,38 @@
                 </div>
                 {% endfor %}
             </div>
+        
+            <!-- Lista zakończonych zadań -->
             <div class="col-md-5 col-lg-5">
                 <h5>Completed Tasks</h5>
-                <!-- List of all the tasks that have completed -->
                 {% for task in completed_tasks %}
                 <div class="card m-1">
-                    <div class="card-body">
-                        {{ task.task }}
-
-                        <p class="text-muted" style="margin-top: 5px;">Priority: <span class="badge 
-                            {% if task.priority == 'high' %}bg-danger
-                            {% elif task.priority == 'medium' %}bg-warning
-                            {% else %}bg-secondary
-                            {% endif %}
-                            "> {{ task.get_priority_display }}</span>
-                        </p>
-                        
-                        <span style="position: relative; float: right;">
-                            <a href="{% url 'mark_as_undone' task.pk %}" class="btn btn-danger"><i class="fa fa-times"></i> Mark as undone</a>
-                        </span>
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 style="font-weight: bold;">{{ task.task }}</h5>
+                            <p class="text-muted" style="margin-top: 5px;">Priority: 
+                                <span class="badge 
+                                    {% if task.priority == 'high' %}bg-danger
+                                    {% elif task.priority == 'medium' %}bg-warning
+                                    {% else %}bg-secondary
+                                    {% endif %}
+                                "> {{ task.get_priority_display }}</span>
+                            </p>
+                            <p class="text-muted" style="margin-top: 5px;">Created: 
+                                <span>{{ task.created_at|date:"d.m.Y H:i" }}</span>
+                            </p>
+                        </div>
+                        <div>
+                            <a href="{% url 'mark_as_undone' task.pk %}" class="btn btn-danger">
+                                <i class="fa fa-times"></i> Mark as undone
+                            </a>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
-        </div>
+        </div>        
+        
         <div class="row">
             <div class="col-md-6 col-lg-6 p-0" style="position: absolute; bottom: 50px;">
                 <!-- To Do Form -->
