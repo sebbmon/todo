@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 Technologie
+## Technologie
 - Python
 - Django
 - SQLite
@@ -14,15 +14,15 @@
 
 ---
 
-## ✨ Funkcjonalności
-- 🔧 Tworzenie, edytowanie i usuwanie zadań (CRUD)  
-- 🎯 Oznaczanie zadań jako wykonane / niewykonane  
-- ✔️ Priorytetyzacja zadań  
-- 🔎 Sortowanie i filtrowanie zadań dla lepszego UX 
+## Funkcjonalności
+- Tworzenie, edytowanie i usuwanie zadań (CRUD)  
+- Oznaczanie zadań jako wykonane / niewykonane  
+- Priorytetyzacja zadań  
+- Sortowanie i filtrowanie zadań dla lepszego UX 
 
 ---
 
-## 💻 Instalacja i uruchomienie
+## Instalacja i uruchomienie
 1. **Sklonuj repozytorium:**
    ```
    git clone https://github.com/sebbmon/todo.git
